@@ -1,0 +1,40 @@
+#!/usr/bin/env perl
+use strict;
+use warnings FATAL => 'all';
+use feature qw(:5.24);
+
+my $is_debug = 0;
+$is_debug = $ARGV[0] if @ARGV;
+
+my $conf = "/etc/mysql/my.cnf";
+$conf = "./my.cnf" if $is_debug;
+
+my $content = <<'EOF';
+[mysqld]
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 0
+EOF
+
+sub write_config {
+    open my $fh, '>>', $conf or die "cant open $conf";
+    print $fh $content;
+    close $fh;
+
+    system "systemctl reload mysql";
+}
+
+unless (-f $conf) {
+    say "cannot find $conf. will create.";
+    write_config;
+} else {
+    unless (`grep slow_query $conf`) {
+        say "can not find slowlog setting in $conf. will write.";
+        system "cp $conf ${conf}.back";
+        write_config;
+    } else {
+        say "$conf is OK. do nothing.";
+    }
+}
+
+1;

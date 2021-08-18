@@ -1,0 +1,170 @@
+#!/usr/bin/env perl
+use strict;
+use warnings FATAL => 'all';
+use feature qw(:5.24);
+use FindBin;
+use lib "$FindBin::RealBin/../local/lib/perl5";
+use Docopt;
+use HTTP::Status;
+use LWP;
+use Parallel::ForkManager;
+use POSIX 'strftime';
+
+sub _get_http_status {
+    my $url = shift @_;
+    my $ua = LWP::UserAgent->new();
+    return unless $url or $ua;
+    my $response = $ua->head($url);
+    return $response->code;
+}
+
+sub _is_service_running {
+    my $service_name = shift @_;
+    my $status = `sudo systemctl status $service_name | grep Active`;
+    $status && $status =~ /running/;
+}
+
+use constant {
+    MAX_PROCESSES => 10,
+};
+
+my $opt = docopt();
+my $is_dry = $opt->{'--dry-run'};
+my $when = strftime "%Y%m%d-%H%M%S", localtime;
+
+say "!!!DRY RUN!!!" if $is_dry;
+
+if ($opt->{lotate}) {
+    say "show messages only\n" if $is_dry;
+    my $services = $opt->{'--services'};
+    for my $service_name (@$services) {
+        my $log = $opt->{"--$service_name"};
+
+        next if !_is_service_running($service_name) && !$is_dry;
+
+        if (defined($log) && -f $log) {
+            my $old_log = "${log}_old";
+            say "rename $log to $old_log";
+            system "sudo rm -rf $old_log" unless $is_dry;
+            system "sudo mv $log $old_log" unless $is_dry;
+        } else {
+            say "$log does not exist. do nothing.";
+        }
+
+        unless ($opt->{'--no_restart'}) {
+            system "sudo systemctl restart $service_name" unless $is_dry;
+            say "$service_name restarted";
+        }
+    }
+} elsif ($opt->{profile}) {
+    say "show commands only\n" if $is_dry;
+    my $kataribe_config = "$FindBin::RealBin/kataribe.toml";
+
+    my $cmds = {
+        kataribe =>
+            "cat %K_LOG% | kataribe -f %K_CONFIG% | slackcat --tee --channel %CHANNEL% -n kataribe-$when",
+        slow =>
+            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | slackcat --tee --channel %CHANNEL% -n slow-$when",
+        pprof =>
+            "cd %WORK_DIR% && rm -rf pprof && rm -rf pprof.png && go tool pprof -png -output pprof.png %URL% && slackcat --channel %CHANNEL% -n pprof-${when}.png pprof.png",
+        iftop => "sudo iftop -t -s 5s | slackcat --tee --channel %CHANNEL% -n iftop-$when",
+        iotop => "sudo iotop -b -o -t -n 5 | slackcat --tee --channel %CHANNEL% -n iotop-$when",
+        dstat =>
+            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | slackcat --tee --channel %CHANNEL% -n dstat-$when"
+    };
+    my $templates = {
+        '%URL%' => do {
+            my $url = $opt->{'--url_pprof'};
+            if (my $port = $opt->{'--port_pprof'}) {
+                $url =~ s#\d{4}#$port#;
+            }
+            $url;
+        },
+        '%CHANNEL%' => $opt->{'--slack_channel'},
+        '%K_CONFIG%' => $kataribe_config,
+        '%K_LOG%' => do {
+            my $log = $opt->{'--nginx'};
+            $log = $opt->{'--envoy'} if _is_service_running('envoy');
+            $log;
+        },
+        '%WORK_DIR%' => $opt->{'--work_dir'},
+        '%SLOW_LOG%' => $opt->{'--mysql'},
+    };
+    for my $key (keys(%$templates)) {
+        map { $cmds->{$_} =~ s/$key/$templates->{$key}/g } keys %$cmds;
+    }
+
+    # command sets
+    $opt->{'--profiling_tools'} = [ "pprof", "iftop", "iotop", "dstat" ]
+        if $opt->{'--profiling_tools'}[0] eq 'load_sets';
+
+    # run commands
+    my $pm = Parallel::ForkManager->new(MAX_PROCESSES);
+    foreach my $tool (@{$opt->{'--profiling_tools'}}) {
+        $pm->start and next;
+        if (my $cmd = $cmds->{$tool}) {
+            system "cd $FindBin::RealBin && kataribe -generate"
+                if $tool eq "kataribe" && !-f $kataribe_config && !$is_dry;
+
+            next if _get_http_status($templates->{'%URL%'}) != 200 && $tool eq "pprof" && !$is_dry;
+
+            eval { system "$cmd" } unless $is_dry;
+            eval { system "echo '$cmd'" } if $is_dry;
+        }
+        $pm->finish;
+    }
+    $pm->wait_all_children;
+} elsif ($opt->{install}) {
+    my $prefix = $opt->{'--prefix'};
+    say "installed to $prefix"
+        unless system "ln -s $FindBin::RealBin/isulog $prefix";
+} elsif ($opt->{uninstall}) {
+    my $prefix = $opt->{'--prefix'};
+    say "uninstalled from $prefix"
+        unless system "rm $prefix/isulog";
+}
+
+1;
+__END__
+
+=head1 NAME
+
+    isulog -- Convenient tool to speed up a webapp iikanji by profiling log.
+
+=head1 USAGE
+
+    isulog -h | --help
+    isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--no_restart] [--dry-run]
+    isulog profile [--profiling_tools <n>...] [--nonotify | --slack_channel <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log>] [--work_dir <n>] [--dry-run]
+    isulog install [--prefix <n>]
+    isulog uninstall [--prefix <n>]
+
+    Options:
+        --mysql=<log>               MySQL slow.log. [default: /var/log/mysql/slow.log]
+        --nginx=<log>               Nginx access.log. [default: /var/log/nginx/access.log]
+        --envoy=<log>               Envoy access.log. [default: /var/log/envoy/access.log]
+        --no_notify                 Does not notify by Slackcat.
+        --no_restart                Do not restart Service.
+        --prefix=<n>                Directory to install. [default: /usr/local/bin]
+        --url_pprof=<n>             Golang pprof endpoint url. [default: http://localhost:1323/debug/pprof/profile]
+        --work_dir=<n>              Working directory for tmp files. [default: /tmp]
+        -c --slack_channel=<n>      SlackChannel name for SlackCat. [default: isulog]
+        -h --help                   Show This screen.
+        -n --dry-run                Dry run.
+        -p --port_pprof=<n>         Golang pprof endpoint port. [http://localhost:%PORT%/debug/pprof/profile]
+        -s --services=<n>           Services. [default: nginx envoy mysql]
+                                    e.g. % isulog lotate -s nginx -s mysql --dry-run
+        -t --profiling_tools=<n>    Profiling tools to run. [default: kataribe slow]
+                                    All available tools:    [pprof kataribe slow iftop iotop dstat].
+                                    All available ool sets: [load_sets].
+                                    If you want to run tools simultaneously that needs to run durning a load on your app.
+                                    e.g. % isulog profile -t pprof -t iftop -t iotop -t dstat -p 3939 --dry-run
+                                    If you want to run pprof, iftop, iotop, dstat simultaneously,
+                                    you can specify load_sets instead of specifying all tools separately.
+                                    e.g. % isulog profile -t load_sets -p 3939 --dry-run
+
+=head1 AUTHORS
+
+    plainbanana
+
+=cut
