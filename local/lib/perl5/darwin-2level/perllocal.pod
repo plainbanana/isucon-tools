@@ -1,0 +1,528 @@
+=head2 Thu Aug 19 03:38:14 2021: C<Module> L<Class::Method::Modifiers|Class::Method::Modifiers>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.13>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:15 2021: C<Module> L<Sub::Quote|Sub::Quote>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.006006>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:16 2021: C<Module> L<Moo|Moo>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.005004>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:16 2021: C<Module> L<Parallel::ForkManager|Parallel::ForkManager>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:36 2021: C<Module> L<Encode|Encode>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.12>
+
+=item *
+
+C<EXE_FILES: bin/enc2xs bin/piconv bin/encguess>
+
+=back
+
+=head2 Thu Aug 19 03:38:37 2021: C<Module> L<IO::HTML|IO::HTML>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.004>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:38 2021: C<Module> L<Encode::Locale|Encode::Locale>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.05>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:39 2021: C<Module> L<Date::Parse|Date::Parse>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.33>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:40 2021: C<Module> L<Time::Local|Time::Local>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.30>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:41 2021: C<Module> L<URI|URI>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 5.09>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:42 2021: C<Module> L<LWP::MediaTypes|LWP::MediaTypes>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.04>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:44 2021: C<Module> L<boolean|boolean>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.46>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:45 2021: C<Module> L<Class::Accessor::Lite|Class::Accessor::Lite>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.08>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:47 2021: C<Module> L<Exporter::Tiny|Exporter::Tiny>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.002002>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:51 2021: C<Module> L<List::MoreUtils::XS|List::MoreUtils::XS>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.430>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:52 2021: C<Module> L<List::MoreUtils|List::MoreUtils>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.430>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:53 2021: C<Module> L<WWW::RobotRules|WWW::RobotRules>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.02>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:54 2021: C<Module> L<HTTP::Negotiate|HTTP::Negotiate>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.01>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:55 2021: C<Module> L<HTTP::Cookies|HTTP::Cookies>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.10>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:56 2021: C<Module> L<HTML::Tagset|HTML::Tagset>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.20>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:58 2021: C<Module> L<HTML::Parser|HTML::Parser>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 3.76>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:38:59 2021: C<Module> L<Try::Tiny|Try::Tiny>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.30>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:39:00 2021: C<Module> L<File::Listing|File::Listing>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.14>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Thu Aug 19 03:39:01 2021: C<Module> L<libwww::perl|libwww::perl>
+
+=over 4
+
+=item *
+
+C<installed into: /Users/sawa/prog/codes/isucon-tools/local/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 6.56>
+
+=item *
+
+C<EXE_FILES: bin/lwp-request bin/lwp-mirror bin/lwp-download bin/lwp-dump>
+
+=back
+
