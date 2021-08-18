@@ -156,7 +156,7 @@ __END__
                                     e.g. % isulog lotate -s nginx -s mysql --dry-run
         -t --profiling_tools=<n>    Profiling tools to run. [default: kataribe slow]
                                     All available tools:    [pprof kataribe slow iftop iotop dstat].
-                                    All available ool sets: [load_sets].
+                                    All available tool-sets: [load_sets].
                                     If you want to run tools simultaneously that needs to run durning a load on your app.
                                     e.g. % isulog profile -t pprof -t iftop -t iotop -t dstat -p 3939 --dry-run
                                     If you want to run pprof, iftop, iotop, dstat simultaneously,
