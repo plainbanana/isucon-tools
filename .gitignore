@@ -1,0 +1,4 @@
+.idea
+./my.cnf
+local/*
+!local/lib
