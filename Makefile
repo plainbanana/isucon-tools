@@ -44,7 +44,7 @@ kataribe-init: ## install kararibe
 
 h2o-init: ## install H2O web server from source
 	sudo apt update && sudo apt install -y cmake openssl libssl-dev
-	sudo sh -c "cd /usr/local/src && rm -rf ./h20 && git clone https://github.com/h2o/h2o.git && cd h2o && git checkout 2a75d26b00fcded91688faadf4313378a1432296 && cmake -DWITH_BUNDLED_SSL=on . && make && make install && mkdir -p /etc/h2o && cp examples/h2o/* /etc/h2o && wget https://gist.github.com/plainbanana/5d0f8b22545b17ce5aabdf053050fa67/raw/c51cbe21b52dd8e3ae50ec4dec361dd129a0c3fd/h2o.service -P /etc/systemd/system/ && systemctl enable h2o && systemctl start h2o "
+	sudo sh -c "cd /usr/local/src && rm -rf ./h20 && git clone https://github.com/h2o/h2o.git && cd h2o && git checkout 7359e98d78d018a35f5da7523feac69f64eddb4b && cmake -DWITH_BUNDLED_SSL=on . && make && make install && mkdir -p /etc/h2o && cp examples/h2o/* /etc/h2o && wget https://gist.github.com/plainbanana/5d0f8b22545b17ce5aabdf053050fa67/raw/c51cbe21b52dd8e3ae50ec4dec361dd129a0c3fd/h2o.service -P /etc/systemd/system/ && systemctl status h2o"
 
 perconia-init: ## install perconia-toolkit for SQL slowlog
 	sudo sh -c "cd /usr/local/src && wget https://www.percona.com/downloads/percona-toolkit/3.2.0/binary/debian/bionic/x86_64/percona-toolkit_3.2.0-1.bionic_amd64.deb && sudo apt update && sudo apt install -y gdebi && yes | sudo gdebi percona-toolkit_3.2.0-1.bionic_amd64.deb"
