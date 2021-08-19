@@ -18,6 +18,12 @@ install-essentials: ## install essentials
 ssh_key_add:
 	sudo -u $(DEFAULT_USER) bash -c "curl https://github.com/Saggggo.keys >> ~/.ssh/authorized_keys"
 	sudo -u $(DEFAULT_USER) bash -c "curl https://github.com/ryo628.keys  >> ~/.ssh/authorized_keys"
+	sudo -u $(DEFAULT_USER) bash -c "curl https://github.com/plainbanana.keys  >> ~/.ssh/authorized_keys"
+
+ssh_key_add_isucon:
+	sudo -u isucon bash -c "curl https://github.com/Saggggo.keys >> ~/.ssh/authorized_keys"
+	sudo -u isucon bash -c "curl https://github.com/ryo628.keys  >> ~/.ssh/authorized_keys"
+	sudo -u isucon bash -c "curl https://github.com/plainbanana.keys  >> ~/.ssh/authorized_keys"
 
 zsh-init: ## install zsh
 	cd ~/ && sh -c "sudo apt update && sudo apt install -y zsh curl git-core" && rm -rf .oh-my-zsh && git clone https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh  && sudo rm -f .zshrc && wget https://gist.github.com/plainbanana/5c6495c639674dd08c89bd2de3d881eb/raw/dfa7916f9f1b97cf358f13eaa2f316848d7883ed/.zshrc -P ~/ && if [ -e .bash_profile ]; then cat .bash_profile >> .zprofile; fi;
