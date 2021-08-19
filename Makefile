@@ -13,6 +13,7 @@ install-essentials: ## install essentials
 	make perconia-init
 	make kataribe-init
 	make slackcat-init
+	make prepare-mysql-slowlog
 	sudo tools/isulog install
 
 ssh_key_add:

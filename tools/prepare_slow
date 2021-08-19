@@ -21,7 +21,7 @@ sub write_config {
     print $fh $content;
     close $fh;
 
-    system "systemctl reload mysql";
+    system "systemctl restart mysql";
 }
 
 unless (-f $conf) {
