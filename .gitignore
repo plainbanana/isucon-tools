@@ -1,4 +1,5 @@
 .idea
 ./my.cnf
+tools/kataribe.toml
 local/*
 !local/lib

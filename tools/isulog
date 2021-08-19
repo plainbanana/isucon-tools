@@ -86,6 +86,7 @@ if ($opt->{lotate}) {
         '%K_LOG%' => do {
             my $log = $opt->{'--nginx'};
             $log = $opt->{'--envoy'} if _is_service_running('envoy');
+            $log = $opt->{'--h2o'} if _is_service_running('h2o');
             $log;
         },
         '%WORK_DIR%' => $opt->{'--work_dir'},
@@ -135,8 +136,8 @@ __END__
 =head1 USAGE
 
     isulog -h | --help
-    isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--no_restart] [--dry-run]
-    isulog profile [--profiling_tools <n>...] [--nonotify | --slack_channel <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log>] [--work_dir <n>] [--dry-run]
+    isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
+    isulog profile [--profiling_tools <n>...] [--nonotify | --slack_channel <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
     isulog install [--prefix <n>]
     isulog uninstall [--prefix <n>]
 
@@ -144,6 +145,7 @@ __END__
         --mysql=<log>               MySQL slow.log. [default: /var/log/mysql/slow.log]
         --nginx=<log>               Nginx access.log. [default: /var/log/nginx/access.log]
         --envoy=<log>               Envoy access.log. [default: /var/log/envoy/access.log]
+        --h2o=<log>                 h2o access.log. [default: /var/log/h2o/access.log]
         --no_notify                 Does not notify by Slackcat.
         --no_restart                Do not restart Service.
         --prefix=<n>                Directory to install. [default: /usr/local/bin]
@@ -153,7 +155,7 @@ __END__
         -h --help                   Show This screen.
         -n --dry-run                Dry run.
         -p --port_pprof=<n>         Golang pprof endpoint port. [http://localhost:%PORT%/debug/pprof/profile]
-        -s --services=<n>           Services. [default: nginx envoy mysql]
+        -s --services=<n>           Services. [default: nginx envoy h2o mysql]
                                     e.g. % isulog lotate -s nginx -s mysql --dry-run
         -t --profiling_tools=<n>    Profiling tools to run. [default: kataribe slow]
                                     All available tools:    [pprof kataribe slow iftop iotop dstat].
