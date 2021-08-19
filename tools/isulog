@@ -42,7 +42,8 @@ if ($opt->{lotate}) {
 
         next if !_is_service_running($service_name) && !$is_dry;
 
-        if (defined($log) && -f $log) {
+        my $is_a = `sudo ls $log`;
+        if ($is_a !~ /cannot access/) {
             my $old_log = "${log}_old";
             say "rename $log to $old_log";
             system "sudo rm -rf $old_log" unless $is_dry;
