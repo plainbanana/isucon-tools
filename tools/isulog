@@ -73,7 +73,7 @@ if ($opt->{lotate}) {
         dstat =>
             "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | slackcat --tee --channel %CHANNEL% -n dstat-$when",
         dmesg =>
-            "dmesg | tail | slackcat --tee --channel %CHANNEL% -n dmesg-$when",
+            "sudo dmesg | tail | slackcat --tee --channel %CHANNEL% -n dmesg-$when",
         vmstat =>
             "vmstat 1 | head | slackcat --tee --channel %CHANNEL% -n vmstat-$when",
         mpstat =>
