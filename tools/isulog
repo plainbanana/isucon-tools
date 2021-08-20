@@ -132,7 +132,7 @@ if ($opt->{lotate}) {
             system "cd $FindBin::RealBin && kataribe -generate"
                 if $tool eq "kataribe" && !-f $kataribe_config && !$is_dry;
 
-            next if _get_http_status($templates->{'%URL%'}) != 200 && $tool eq "pprof" && !$is_dry;
+            # next if _get_http_status($templates->{'%URL%'}) != 200 && $tool eq "pprof" && !$is_dry;
 
             eval { system "$cmd" } unless $is_dry;
             eval { system "echo '$cmd'" } if $is_dry;
