@@ -114,7 +114,6 @@ if ($opt->{lotate}) {
     $opt->{'--profiling_tools'} = [
         'dstat',
         'iostat',
-        'slow',
         'mpstat',
         'vmstat',
         'iotop',
