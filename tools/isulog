@@ -30,7 +30,7 @@ use constant {
 
 my $opt = docopt();
 my $is_dry = $opt->{'--dry-run'};
-my $when = strftime "%Y%m%d-%H%M%S", localtime;
+my $when = strftime "%H%M%S", localtime;
 
 say "!!!DRY RUN!!!" if $is_dry;
 
@@ -71,7 +71,21 @@ if ($opt->{lotate}) {
         iftop => "sudo iftop -t -s 5s | slackcat --tee --channel %CHANNEL% -n iftop-$when",
         iotop => "sudo iotop -b -o -t -n 5 | slackcat --tee --channel %CHANNEL% -n iotop-$when",
         dstat =>
-            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | slackcat --tee --channel %CHANNEL% -n dstat-$when"
+            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | slackcat --tee --channel %CHANNEL% -n dstat-$when",
+        dmesg =>
+            "dmesg | tail | slackcat --tee --channel %CHANNEL% -n dmesg-$when",
+        vmstat =>
+            "vmstat 1 | head | slackcat --tee --channel %CHANNEL% -n vmstat-$when",
+        mpstat =>
+            "mpstat -P ALL 1 5 | slackcat --tee --channel %CHANNEL% -n mpstat-$when",
+        pidstat =>
+            "pidstat 1 5 | slackcat --tee --channel %CHANNEL% -n pidstat-$when",
+        iostat =>
+            "iostat -xz 1 5 | slackcat --tee --channel %CHANNEL% -n iotstat-$when",
+        sardev =>
+            "sar -n DEV 1 5 | slackcat --tee --channel %CHANNEL% -n sar-dev-$when",
+        sartcp =>
+            "sar -n TCP,ETCP 1 5 | slackcat --tee --channel %CHANNEL% -n sar-tcp-$when",
     };
     my $templates = {
         '%URL%' => do {
@@ -97,8 +111,19 @@ if ($opt->{lotate}) {
     }
 
     # command sets
-    $opt->{'--profiling_tools'} = [ "pprof", "iftop", "iotop", "dstat" ]
-        if $opt->{'--profiling_tools'}[0] eq 'load_sets';
+    $opt->{'--profiling_tools'} = [
+        'dstat',
+        'iostat',
+        'slow',
+        'mpstat',
+        'vmstat',
+        'iotop',
+        'sartcp',
+        'dmesg',
+        'iftop',
+        'sardev',
+        'pidstat'
+    ] if $opt->{'--profiling_tools'}[0] eq 'load_sets';
 
     # run commands
     my $pm = Parallel::ForkManager->new(MAX_PROCESSES);
@@ -157,12 +182,13 @@ __END__
         -p --port_pprof=<n>         Golang pprof endpoint port. [http://localhost:%PORT%/debug/pprof/profile]
         -s --services=<n>           Services. [default: nginx envoy h2o mysql]
                                     e.g. % isulog lotate -s nginx -s mysql --dry-run
-        -t --profiling_tools=<n>    Profiling tools to run. [default: kataribe slow]
-                                    All available tools:    [pprof kataribe slow iftop iotop dstat].
+        -t --profiling_tools=<n>    Profiling tools to run. [default: load_sets]
+                                    All available tools:  [ 'dstat', 'iostat', 'slow', 'mpstat', 'vmstat', 'iotop',
+                                                            'sartcp', 'dmesg', 'kataribe', 'pprof', 'iftop', 'sardev', 'pidstat' ]
                                     All available tool-sets: [load_sets].
                                     If you want to run tools simultaneously that needs to run durning a load on your app.
                                     e.g. % isulog profile -t pprof -t iftop -t iotop -t dstat -p 3939 --dry-run
-                                    If you want to run pprof, iftop, iotop, dstat simultaneously,
+                                    If you want to run tools (pprof, kataribe are excluded) simultaneously,
                                     you can specify load_sets instead of specifying all tools separately.
                                     e.g. % isulog profile -t load_sets -p 3939 --dry-run
 

@@ -4,7 +4,7 @@ MYSQL_ALLOW_IP:=%
 install-essentials: ## install essentials
 	sudo apt update
 	sudo apt upgrade -y
-	sudo apt install -y vim git-core htop dstat unzip graphviz jq silversearcher-ag iotop iftop
+	sudo apt install -y vim git-core htop dstat unzip graphviz jq silversearcher-ag iotop iftop sysstat
 	# make zsh-init
 	# make redis-init
 	# make scripts-dl
