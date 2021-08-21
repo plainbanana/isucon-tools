@@ -112,6 +112,7 @@ if ($opt->{lotate}) {
 
     # command sets
     $opt->{'--profiling_tools'} = [
+        'pprof',
         'dstat',
         'iostat',
         'mpstat',
