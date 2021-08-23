@@ -1,7 +1,7 @@
 # isucon-tools
 - Makefile
 
-first to run `make install-essentials` to install some essential tools and configure some `/etc` files to be done every server.
+First to run `make install-essentials` to install some essential tools and configure some `/etc` files to be done every server.
 
 
 - isulog
