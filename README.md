@@ -6,7 +6,7 @@ first to run `make install-essentials` to install some essential tools and confi
 
 - isulog
 
-Convenient tool to run commands for gathering metrics and helping to deploy an app.
+Daring but convenient tool to run commands for gathering metrics and helping to deploy an app.
 
 `isulog lotate` Refresh application logs and restart for next benchmarking jobs.
 
