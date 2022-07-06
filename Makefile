@@ -83,7 +83,8 @@ slackcat-init:
 	slackcat --configure
 
 prepare-mysql-multi:
-	sudo mysql -e "rename user isucon@'*' to isucon@'$(MYSQL_ALLOW_IP)'"
+	sudo mysql -e "rename user isucon@'localhost' to isucon@'$(MYSQL_ALLOW_IP)'"
+	sudo mysql -e "grant all privileges on *.* to isucon@'%'; flush privileges;"
 
 prepare-mysql-slowlog:
 	sudo ./tools/prepare_slow
