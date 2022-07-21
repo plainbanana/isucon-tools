@@ -1,5 +1,9 @@
 DEFAULT_USER:=ubuntu
 MYSQL_ALLOW_IP:=%
+PERCONIA_URL_BASE:=https://downloads.percona.com/downloads/percona-toolkit/3.4.0/binary/debian/focal/x86_64/
+PERCONIA_DEB:=percona-toolkit_3.4.0-3.focal_amd64.deb
+KATARIBE_URL_BASE:=https://github.com/matsuu/kataribe/releases/download/v0.4.3/
+KATARIBE_ZIP:=kataribe-v0.4.3_linux_amd64.zip
 
 install-essentials: ## install essentials
 	sudo apt update
@@ -36,7 +40,7 @@ alp-init: ## install alp
 	sudo sh -c "apt update && apt install -y unzip && cd /usr/local/src && wget https://github.com/tkuchiki/alp/releases/download/v0.0.4/alp_linux_amd64.zip && unzip alp_linux_amd64.zip && sudo mv alp_linux_amd64 /usr/local/bin/alp && sudo chown root:root /usr/local/bin/alp"
 
 kataribe-init: ## install kararibe
-	sudo sh -c "apt update && apt install -y unzip && cd /usr/local/src && wget  https://github.com/matsuu/kataribe/releases/download/v0.4.1/kataribe-v0.4.1_linux_amd64.zip && unzip kataribe-v0.4.1_linux_amd64.zip && sudo mv kataribe /usr/local/bin/kataribe && sudo chown root:root /usr/local/bin/kataribe"
+	sudo sh -c "apt update && apt install -y unzip && cd /usr/local/src && wget $(KATARIBE_URL_BASE)$(KATARIBE_ZIP) && unzip $(KATARIBE_ZIP) && sudo mv kataribe /usr/local/bin/kataribe && sudo chown root:root /usr/local/bin/kataribe"
 	/usr/local/bin/kataribe -generate
 
 # h2o-init: ## install H2O web server from source
@@ -48,7 +52,7 @@ h2o-init: ## install H2O web server from source
 	sudo sh -c "cd /usr/local/src && rm -rf ./h20 && git clone https://github.com/h2o/h2o.git && cd h2o && git checkout 7359e98d78d018a35f5da7523feac69f64eddb4b && cmake -DWITH_BUNDLED_SSL=on . && make && make install && mkdir -p /etc/h2o && cp examples/h2o/* /etc/h2o && wget https://gist.github.com/plainbanana/5d0f8b22545b17ce5aabdf053050fa67/raw/c51cbe21b52dd8e3ae50ec4dec361dd129a0c3fd/h2o.service -P /etc/systemd/system/ && systemctl status h2o"
 
 perconia-init: ## install perconia-toolkit for SQL slowlog
-	sudo sh -c "cd /usr/local/src && wget https://www.percona.com/downloads/percona-toolkit/3.2.0/binary/debian/bionic/x86_64/percona-toolkit_3.2.0-1.bionic_amd64.deb && sudo apt update && sudo apt install -y gdebi && yes | sudo gdebi percona-toolkit_3.2.0-1.bionic_amd64.deb"
+	sudo sh -c "cd /usr/local/src && wget $(PERCONIA_URL_BASE)$(PERCONIA_DEB) && sudo apt update && sudo apt install -y gdebi && yes | sudo gdebi $(PERCONIA_DEB)"
 	sudo sh -c "mkdir -p /var/log/mysql && chown mysql:mysql /var/log/mysql && sudo chmod 700 /var/log/mysql"
 
 ## scripts-dl: ## download useful scripts
