@@ -10,30 +10,29 @@ Daring but convenient tool to run commands for gathering metrics and helping to 
 
 `isulog lotate` Refresh application logs and restart for next benchmarking jobs.
 
-`isulog profile` Run commands in parallel set by `-t` option, and notifying to Slack channel using Slackcat.
+`isulog profile` Run commands in parallel set by `-t` option, and notifying to Discord using discocat.
 
 `isulog install/uninstall` Install/Uninstall this command to/from a `--prefix` directory.
 
 ```
 %  isulog -h
 Usage:
-isulog -h | --help
-isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
-isulog profile [--profiling_tools <n>...] [--nonotify | --slack_channel <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
-isulog install [--prefix <n>]
-isulog uninstall [--prefix <n>]
+        isulog -h | --help
+        isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
+        isulog profile [--profiling_tools <n>...] [--bot <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
+        isulog install [--prefix <n>]
+        isulog uninstall [--prefix <n>]
 
         Options:
             --mysql=<log>               MySQL slow.log. [default: /var/log/mysql/slow.log]
             --nginx=<log>               Nginx access.log. [default: /var/log/nginx/access.log]
             --envoy=<log>               Envoy access.log. [default: /var/log/envoy/access.log]
             --h2o=<log>                 h2o access.log. [default: /var/log/h2o/access.log]
-            --no_notify                 Does not notify by Slackcat.
             --no_restart                Do not restart Service.
             --prefix=<n>                Directory to install. [default: /usr/local/bin]
             --url_pprof=<n>             Golang pprof endpoint url. [default: http://localhost:1323/debug/pprof/profile]
             --work_dir=<n>              Working directory for tmp files. [default: /tmp]
-            -c --slack_channel=<n>      SlackChannel name for SlackCat. [default: isulog]
+            -b --bot=<n>                Bot name used by discocat. See discocat.yml fot details. [default: default]
             -h --help                   Show This screen.
             -n --dry-run                Dry run.
             -p --port_pprof=<n>         Golang pprof endpoint port. [http://localhost:%PORT%/debug/pprof/profile]
