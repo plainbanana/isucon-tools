@@ -28,7 +28,7 @@ if (-f "/etc/nginx/nginx.conf") {
 
     my $modified = 0;
     while (<$fh_old>) {
-        if ($_ =~ /access_log \/var\/log\/nginx\/access\.log;$/) {
+        if ($_ =~ /access_log +\/var\/log\/nginx\/access\.log/) {
             $nginx_access_log_conf =~ s#%HEADER%#$script_full_path#;
             print $fh_tmp $nginx_access_log_conf;
             say "$old is modified. backup will be $back";

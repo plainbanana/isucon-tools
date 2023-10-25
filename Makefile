@@ -9,15 +9,11 @@ install-essentials: ## install essentials
 	sudo apt update
 	sudo apt upgrade -y
 	sudo apt install -y vim git-core htop dstat unzip graphviz jq silversearcher-ag iotop iftop sysstat
-	# make zsh-init
-	# make redis-init
-	# make scripts-dl
-	# make ssh_key_add
-	# make alp-init
 	make perconia-init
 	make kataribe-init
 	make discocat-init
 	make prepare-mysql-slowlog
+	make prepare-nginx-kataribe
 	sudo tools/isulog install
 
 ssh_key_add:
