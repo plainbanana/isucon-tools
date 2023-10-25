@@ -63,29 +63,29 @@ if ($opt->{lotate}) {
 
     my $cmds = {
         kataribe =>
-            "cat %K_LOG% | kataribe -f %K_CONFIG% | slackcat --tee --channel %CHANNEL% -n kataribe-$when",
+            "cat %K_LOG% | kataribe -f %K_CONFIG% | discocat --tee --bot %BOT%",
         slow =>
-            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | slackcat --tee --channel %CHANNEL% -n slow-$when",
+            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | discocat --tee --bot %BOT%",
         pprof =>
-            "cd %WORK_DIR% && rm -rf pprof && rm -rf pprof.png && go tool pprof -png -output pprof.png %URL% && slackcat --channel %CHANNEL% -n pprof-${when}.png pprof.png",
-        iftop => "sudo iftop -t -s 5s | slackcat --tee --channel %CHANNEL% -n iftop-$when",
-        iotop => "sudo iotop -b -o -t -n 5 | slackcat --tee --channel %CHANNEL% -n iotop-$when",
+            "cd %WORK_DIR% && rm -rf pprof && rm -rf pprof.png && go tool pprof -png -output pprof.png %URL% && cat pprof.png | discocat --bot %BOT%",
+        iftop => "sudo iftop -t -s 5s | discocat --tee --bot %BOT%",
+        iotop => "sudo iotop -b -o -t -n 5 | discocat --tee --bot %BOT%",
         dstat =>
-            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | slackcat --tee --channel %CHANNEL% -n dstat-$when",
+            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | discocat --tee --bot %BOT%",
         dmesg =>
-            "sudo dmesg | tail | slackcat --tee --channel %CHANNEL% -n dmesg-$when",
+            "sudo dmesg | tail | discocat --tee --bot %BOT%",
         vmstat =>
-            "vmstat 1 | head | slackcat --tee --channel %CHANNEL% -n vmstat-$when",
+            "vmstat 1 | head | discocat --tee --bot %BOT%",
         mpstat =>
-            "mpstat -P ALL 1 5 | slackcat --tee --channel %CHANNEL% -n mpstat-$when",
+            "mpstat -P ALL 1 5 | discocat --tee --bot %BOT%",
         pidstat =>
-            "pidstat 1 5 | slackcat --tee --channel %CHANNEL% -n pidstat-$when",
+            "pidstat 1 5 | discocat --tee --bot %BOT%",
         iostat =>
-            "iostat -xz 1 5 | slackcat --tee --channel %CHANNEL% -n iotstat-$when",
+            "iostat -xz 1 5 | discocat --tee --bot %BOT%",
         sardev =>
-            "sar -n DEV 1 5 | slackcat --tee --channel %CHANNEL% -n sar-dev-$when",
+            "sar -n DEV 1 5 | discocat --tee --bot %BOT%",
         sartcp =>
-            "sar -n TCP,ETCP 1 5 | slackcat --tee --channel %CHANNEL% -n sar-tcp-$when",
+            "sar -n TCP,ETCP 1 5 | discocat --tee --bot %BOT%",
     };
     my $templates = {
         '%URL%' => do {
@@ -95,7 +95,7 @@ if ($opt->{lotate}) {
             }
             $url;
         },
-        '%CHANNEL%' => $opt->{'--slack_channel'},
+        '%BOT%' => $opt->{'--bot'},
         '%K_CONFIG%' => $kataribe_config,
         '%K_LOG%' => do {
             my $log = $opt->{'--nginx'};
@@ -162,7 +162,7 @@ __END__
 
     isulog -h | --help
     isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
-    isulog profile [--profiling_tools <n>...] [--nonotify | --slack_channel <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
+    isulog profile [--profiling_tools <n>...] [--bot <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
     isulog install [--prefix <n>]
     isulog uninstall [--prefix <n>]
 
@@ -171,12 +171,11 @@ __END__
         --nginx=<log>               Nginx access.log. [default: /var/log/nginx/access.log]
         --envoy=<log>               Envoy access.log. [default: /var/log/envoy/access.log]
         --h2o=<log>                 h2o access.log. [default: /var/log/h2o/access.log]
-        --no_notify                 Does not notify by Slackcat.
         --no_restart                Do not restart Service.
         --prefix=<n>                Directory to install. [default: /usr/local/bin]
         --url_pprof=<n>             Golang pprof endpoint url. [default: http://localhost:1323/debug/pprof/profile]
         --work_dir=<n>              Working directory for tmp files. [default: /tmp]
-        -c --slack_channel=<n>      SlackChannel name for SlackCat. [default: isulog]
+        -b --bot=<n>                Bot name used by discocat. See discocat.yml fot details. [default: default]
         -h --help                   Show This screen.
         -n --dry-run                Dry run.
         -p --port_pprof=<n>         Golang pprof endpoint port. [http://localhost:%PORT%/debug/pprof/profile]

@@ -16,7 +16,7 @@ install-essentials: ## install essentials
 	# make alp-init
 	make perconia-init
 	make kataribe-init
-	make slackcat-init
+	make discocat-init
 	make prepare-mysql-slowlog
 	sudo tools/isulog install
 
@@ -80,11 +80,8 @@ node-init:
 # 	sudo apt update
 # 	sudo apt install -y golang-go
 
-slackcat-init:
-	wget https://github.com/bcicen/slackcat/releases/download/1.7.3/slackcat-1.7.3-linux-amd64 -O slackcat
-	sudo mv slackcat /usr/local/bin/
-	sudo chmod +x /usr/local/bin/slackcat
-	slackcat --configure
+discocat-init: ## You need ~/.config/discocat.yml
+	go install github.com/wan-nyan-wan/discocat@latest
 
 prepare-mysql-multi:
 	sudo mysql -e "rename user isucon@'localhost' to isucon@'$(MYSQL_ALLOW_IP)'"
