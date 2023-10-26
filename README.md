@@ -19,7 +19,7 @@ Daring but convenient tool to run commands for gathering metrics and helping to 
 Usage:
         isulog -h | --help
         isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
-        isulog profile [--profiling_tools <n>...] [--bot <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
+        isulog profile [--profiling_tools <n>...] [--bot <n>] [--memo <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
         isulog install [--prefix <n>]
         isulog uninstall [--prefix <n>]
 
@@ -32,6 +32,7 @@ Usage:
             --prefix=<n>                Directory to install. [default: /usr/local/bin]
             --url_pprof=<n>             Golang pprof endpoint url. [default: http://localhost:1323/debug/pprof/profile]
             --work_dir=<n>              Working directory for tmp files. [default: /tmp]
+            --memo=<n>                  Adding a memo to messages posted with discocat. [default: none]
             -b --bot=<n>                Bot name used by discocat. See discocat.yml fot details. [default: default]
             -h --help                   Show This screen.
             -n --dry-run                Dry run.

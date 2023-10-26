@@ -63,31 +63,32 @@ if ($opt->{lotate}) {
     my $kataribe_config = "$FindBin::RealBin/kataribe.toml";
     my $host = hostname;
 
+    my $memo = $opt->{memo};
     my $cmds = {
         kataribe =>
-            "cat %K_LOG% | kataribe -f %K_CONFIG% | sed -e '1i[ISULOG] kataribe at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "cat %K_LOG% | kataribe -f %K_CONFIG% | sed -e '1i[ISULOG] kataribe at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         slow =>
-            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | sed -e '1i[ISULOG] pt-query-digest at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | sed -e '1i[ISULOG] pt-query-digest at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         pprof =>
             "cd %WORK_DIR% && rm -rf pprof && rm -rf pprof.png && go tool pprof -png -output pprof.png %URL% && cat pprof.png | discocat --bot %BOT%",
-        iftop => "sudo iftop -t -s 5s | sed -e '1i[ISULOG] iftop at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
-        iotop => "sudo iotop -b -o -t -n 5 | sed -e '1i[ISULOG] iotop at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+        iftop => "sudo iftop -t -s 5s | sed -e '1i[ISULOG] iftop at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+        iotop => "sudo iotop -b -o -t -n 5 | sed -e '1i[ISULOG] iotop at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         dstat =>
-            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | sed -e '1i[ISULOG] dstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | sed -e '1i[ISULOG] dstat at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         dmesg =>
-            "sudo dmesg | tail | sed -e '1i[ISULOG] dmesg at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sudo dmesg | tail | sed -e '1i[ISULOG] dmesg at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         vmstat =>
-            "vmstat 1 | head | sed -e '1i[ISULOG] vmstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "vmstat 1 | head | sed -e '1i[ISULOG] vmstat at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         mpstat =>
-            "mpstat -P ALL 1 5 | sed -e '1i[ISULOG] mpstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "mpstat -P ALL 1 5 | sed -e '1i[ISULOG] mpstat at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         pidstat =>
-            "pidstat 1 5 | sed -e '1i[ISULOG] pidstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "pidstat 1 5 | sed -e '1i[ISULOG] pidstat at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         iostat =>
-            "iostat -xz 1 5 | sed -e '1i[ISULOG] iostat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "iostat -xz 1 5 | sed -e '1i[ISULOG] iostat at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         sardev =>
-            "sar -n DEV 1 5 | sed -e '1i[ISULOG] sar dev at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sar -n DEV 1 5 | sed -e '1i[ISULOG] sar dev at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         sartcp =>
-            "sar -n TCP,ETCP 1 5 | sed -e '1i[ISULOG] sar tcp at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sar -n TCP,ETCP 1 5 | sed -e '1i[ISULOG] sar tcp at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
     };
     my $templates = {
         '%URL%' => do {
@@ -164,7 +165,7 @@ __END__
 
     isulog -h | --help
     isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
-    isulog profile [--profiling_tools <n>...] [--bot <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
+    isulog profile [--profiling_tools <n>...] [--bot <n>] [--memo <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
     isulog install [--prefix <n>]
     isulog uninstall [--prefix <n>]
 
@@ -177,6 +178,7 @@ __END__
         --prefix=<n>                Directory to install. [default: /usr/local/bin]
         --url_pprof=<n>             Golang pprof endpoint url. [default: http://localhost:1323/debug/pprof/profile]
         --work_dir=<n>              Working directory for tmp files. [default: /tmp]
+        --memo=<n>                  Adding a memo to messages posted with discocat. [default: none]
         -b --bot=<n>                Bot name used by discocat. See discocat.yml fot details. [default: default]
         -h --help                   Show This screen.
         -n --dry-run                Dry run.
