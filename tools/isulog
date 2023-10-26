@@ -9,6 +9,7 @@ use HTTP::Status;
 use LWP;
 use Parallel::ForkManager;
 use POSIX 'strftime';
+use Sys::Hostname 'hostname';
 
 sub _get_http_status {
     my $url = shift @_;
@@ -60,32 +61,33 @@ if ($opt->{lotate}) {
 } elsif ($opt->{profile}) {
     say "show commands only\n" if $is_dry;
     my $kataribe_config = "$FindBin::RealBin/kataribe.toml";
+    my $host = hostname;
 
     my $cmds = {
         kataribe =>
-            "cat %K_LOG% | kataribe -f %K_CONFIG% | discocat --tee --bot %BOT%",
+            "cat %K_LOG% | kataribe -f %K_CONFIG% | sed '1i[ISULOG] kataribe at ${host}' | discocat --tee --bot %BOT%",
         slow =>
-            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | discocat --tee --bot %BOT%",
+            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | sed '1i[ISULOG] pt-query-digest at ${host}'  | discocat --tee --bot %BOT%",
         pprof =>
             "cd %WORK_DIR% && rm -rf pprof && rm -rf pprof.png && go tool pprof -png -output pprof.png %URL% && cat pprof.png | discocat --bot %BOT%",
-        iftop => "sudo iftop -t -s 5s | discocat --tee --bot %BOT%",
-        iotop => "sudo iotop -b -o -t -n 5 | discocat --tee --bot %BOT%",
+        iftop => "sudo iftop -t -s 5s | sed '1i[ISULOG] iftop at ${host}' | discocat --tee --bot %BOT%",
+        iotop => "sudo iotop -b -o -t -n 5 | sed '1i[ISULOG] iotop at ${host}' | discocat --tee --bot %BOT%",
         dstat =>
-            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | discocat --tee --bot %BOT%",
+            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | sed '1i[ISULOG] dstat at ${host}' | discocat --tee --bot %BOT%",
         dmesg =>
-            "sudo dmesg | tail | discocat --tee --bot %BOT%",
+            "sudo dmesg | tail | sed '1i[ISULOG] dmesg at ${host}' | discocat --tee --bot %BOT%",
         vmstat =>
-            "vmstat 1 | head | discocat --tee --bot %BOT%",
+            "vmstat 1 | head | sed '1i[ISULOG] vmstat at ${host}' | discocat --tee --bot %BOT%",
         mpstat =>
-            "mpstat -P ALL 1 5 | discocat --tee --bot %BOT%",
+            "mpstat -P ALL 1 5 | sed '1i[ISULOG] mpstat at ${host}' | discocat --tee --bot %BOT%",
         pidstat =>
-            "pidstat 1 5 | discocat --tee --bot %BOT%",
+            "pidstat 1 5 | sed '1i[ISULOG] pidstat at ${host}' | discocat --tee --bot %BOT%",
         iostat =>
-            "iostat -xz 1 5 | discocat --tee --bot %BOT%",
+            "iostat -xz 1 5 | sed '1i[ISULOG] iostat at ${host}' | discocat --tee --bot %BOT%",
         sardev =>
-            "sar -n DEV 1 5 | discocat --tee --bot %BOT%",
+            "sar -n DEV 1 5 | sed '1i[ISULOG] sar dev at ${host}' | discocat --tee --bot %BOT%",
         sartcp =>
-            "sar -n TCP,ETCP 1 5 | discocat --tee --bot %BOT%",
+            "sar -n TCP,ETCP 1 5 | sed '1i[ISULOG] sar tcp at ${host}' | discocat --tee --bot %BOT%",
     };
     my $templates = {
         '%URL%' => do {
