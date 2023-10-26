@@ -65,29 +65,29 @@ if ($opt->{lotate}) {
 
     my $cmds = {
         kataribe =>
-            "cat %K_LOG% | kataribe -f %K_CONFIG% | sed -e '1i[ISULOG] kataribe at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "cat %K_LOG% | kataribe -f %K_CONFIG% | sed -e '1i[ISULOG] kataribe at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         slow =>
-            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | sed -e '1i[ISULOG] pt-query-digest at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | sed -e '1i[ISULOG] pt-query-digest at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         pprof =>
             "cd %WORK_DIR% && rm -rf pprof && rm -rf pprof.png && go tool pprof -png -output pprof.png %URL% && cat pprof.png | discocat --bot %BOT%",
-        iftop => "sudo iftop -t -s 5s | sed -e '1i[ISULOG] iftop at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
-        iotop => "sudo iotop -b -o -t -n 5 | sed -e '1i[ISULOG] iotop at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+        iftop => "sudo iftop -t -s 5s | sed -e '1i[ISULOG] iftop at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+        iotop => "sudo iotop -b -o -t -n 5 | sed -e '1i[ISULOG] iotop at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         dstat =>
-            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | sed -e '1i[ISULOG] dstat at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "dstat -c -d -n -g -ys -m -l -r --vm --aio --fs --unix --lock --ipc --tcp -i -p 1 10 | sed -e '1i[ISULOG] dstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         dmesg =>
-            "sudo dmesg | tail | sed -e '1i[ISULOG] dmesg at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sudo dmesg | tail | sed -e '1i[ISULOG] dmesg at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         vmstat =>
-            "vmstat 1 | head | sed -e '1i[ISULOG] vmstat at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "vmstat 1 | head | sed -e '1i[ISULOG] vmstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         mpstat =>
-            "mpstat -P ALL 1 5 | sed -e '1i[ISULOG] mpstat at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "mpstat -P ALL 1 5 | sed -e '1i[ISULOG] mpstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         pidstat =>
-            "pidstat 1 5 | sed -e '1i[ISULOG] pidstat at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "pidstat 1 5 | sed -e '1i[ISULOG] pidstat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         iostat =>
-            "iostat -xz 1 5 | sed -e '1i[ISULOG] iostat at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "iostat -xz 1 5 | sed -e '1i[ISULOG] iostat at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         sardev =>
-            "sar -n DEV 1 5 | sed -e '1i[ISULOG] sar dev at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sar -n DEV 1 5 | sed -e '1i[ISULOG] sar dev at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         sartcp =>
-            "sar -n TCP,ETCP 1 5 | sed -e '1i[ISULOG] sar tcp at ${host}\n\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sar -n TCP,ETCP 1 5 | sed -e '1i[ISULOG] sar tcp at ${host}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
     };
     my $templates = {
         '%URL%' => do {
