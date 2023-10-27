@@ -35,7 +35,7 @@ my $when = strftime "%H%M%S", localtime;
 
 say "!!!DRY RUN!!!" if $is_dry;
 
-if ($opt->{lotate}) {
+if ($opt->{rotate}) {
     say "show messages only\n" if $is_dry;
     my $services = $opt->{'--services'};
     for my $service_name (@$services) {
@@ -164,7 +164,7 @@ __END__
 =head1 USAGE
 
     isulog -h | --help
-    isulog lotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
+    isulog rotate [--services=<n>...] [--nginx <log>] [--envoy <log>] [--mysql <log>] [--h2o <log>] [--no_restart] [--dry-run]
     isulog profile [--profiling_tools <n>...] [--bot <n>] [--memo <n>] [--url_pprof <n> | --port_pprof <n>] [--nginx <log> | --envoy <log> | --h2o <log>] [--work_dir <n>] [--dry-run]
     isulog install [--prefix <n>]
     isulog uninstall [--prefix <n>]
@@ -184,7 +184,7 @@ __END__
         -n --dry-run                Dry run.
         -p --port_pprof=<n>         Golang pprof endpoint port. [http://localhost:%PORT%/debug/pprof/profile]
         -s --services=<n>           Services. [default: nginx envoy h2o mysql]
-                                    e.g. % isulog lotate -s nginx -s mysql --dry-run
+                                    e.g. % isulog rotate -s nginx -s mysql --dry-run
         -t --profiling_tools=<n>    Profiling tools to run. [default: load_sets]
                                     All available tools:  [ 'dstat', 'iostat', 'slow', 'mpstat', 'vmstat', 'iotop',
                                                             'sartcp', 'dmesg', 'kataribe', 'pprof', 'iftop', 'sardev', 'pidstat' ]
