@@ -1,0 +1,108 @@
+#!/usr/bin/env perl
+use strict;
+use warnings FATAL => 'all';
+use feature qw(:5.24);
+
+my $code = system "make";
+exit if $code != 0;
+
+############################
+########## CONFIG ##########
+############################
+our $APP_NAME = 'isupipe';
+our $SERVICE_NAME = "${APP_NAME}-go";
+our @APP_SERVERS = (
+    # 'EXAMPLE-HOSTNAME',
+);
+our @SERVERS = (
+    # 'EXAMPLE-HOSTNAME',
+);
+############################
+############################
+############################
+
+for my $server (@SERVERS) {
+    if (grep { $server eq $_ } @APP_SERVERS) {
+        say _stop_app($server);
+        say _deploy($server);
+        say _restart_app($server);
+    }
+    say _isulog_lotate($server);
+}
+say "\e[31m[INFO] DEPLOY FINISHED\e[0m";
+
+sub _stop_app {
+    my ($server) = @_;
+    say "\e[31m[INFO] stop $server app\e[0m";
+    <<`CMD`;
+ssh $server << EOF
+sudo systemctl stop ${SERVICE_NAME}.service
+EOF
+CMD
+}
+
+sub _deploy {
+    my ($server) = @_;
+    say "\e[31m[INFO] deploy $server app\e[0m";
+    <<`CMD`;
+sftp $server << EOF
+cd /home/isucon/webapp/go
+put $APP_NAME
+EOF
+CMD
+}
+
+sub _restart_app {
+    my ($server) = @_;
+    say "\e[31m[INFO] restart $server app\e[0m";
+    <<`CMD`;
+ssh $server << EOF
+sudo systemctl start  ${SERVICE_NAME}.service
+sudo systemctl status ${SERVICE_NAME}.service
+EOF
+CMD
+}
+
+sub _isulog_lotate {
+    my ($server) = @_;
+    say "\e[31m[INFO] isulog rotate at $server\e[0m";
+    <<`CMD`;
+ssh $server << EOF
+isulog rotate
+EOF
+CMD
+}
+
+1;
+__END__
+
+=encoding utf-8
+
+=head1 NAME
+
+deploy -- Daring tool to deploy local golang isucon app binary to remote servers.
+
+=head1 USAGE
+
+this tool is just a example. edit for your own environment.
+edit below variables.
+
+=head2 $APP_NAME
+
+specify the name of the local binary name.
+
+=head2 $SERVICE_NAME
+
+default is "${APP_NAME}-go".
+specify the prefix of the systemd service name if necessary.
+
+=head2 @SERVERS
+
+specify hostnames that run C<isulog rotate>.
+
+=head2 @APP_SERVERS
+
+specify hostnames that deploy local binary.
+elements in C<@APP_SERVERS> must also be defined in C<@SERVERS>.
+
+=cut
