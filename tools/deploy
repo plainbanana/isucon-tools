@@ -11,23 +11,24 @@ exit if $code != 0;
 ############################
 our $APP_NAME = 'isupipe';
 our $SERVICE_NAME = "${APP_NAME}-go";
-our @APP_SERVERS = (
+our @APP_DEPLOY_SERVERS = (
     # 'EXAMPLE-HOSTNAME',
 );
-our @SERVERS = (
+our @ISULOG_ROTATE_SERVERS = (
     # 'EXAMPLE-HOSTNAME',
 );
 ############################
 ############################
 ############################
 
-for my $server (@SERVERS) {
-    if (grep { $server eq $_ } @APP_SERVERS) {
-        say _stop_app($server);
-        say _deploy($server);
-        say _restart_app($server);
-    }
-    say _isulog_lotate($server);
+for my $server (@APP_DEPLOY_SERVERS) {
+    say _stop_app($server);
+    say _deploy($server);
+    say _restart_app($server);
+}
+
+for my $server (@ISULOG_ROTATE_SERVERS) {
+    say _isulog_rotate($server);
 }
 say "\e[31m[INFO] DEPLOY FINISHED\e[0m";
 
@@ -63,7 +64,7 @@ EOF
 CMD
 }
 
-sub _isulog_lotate {
+sub _isulog_rotate {
     my ($server) = @_;
     say "\e[31m[INFO] isulog rotate at $server\e[0m";
     <<`CMD`;
@@ -96,13 +97,12 @@ specify the name of the local binary name.
 default is "${APP_NAME}-go".
 specify the prefix of the systemd service name if necessary.
 
-=head2 @SERVERS
-
-specify hostnames that run C<isulog rotate>.
-
-=head2 @APP_SERVERS
+=head2 @APP_DEPLOY_SERVERS
 
 specify hostnames that deploy local binary.
-elements in C<@APP_SERVERS> must also be defined in C<@SERVERS>.
+
+=head2 @ISULOG_ROTATE_SERVERS
+
+specify hostnames that run C<isulog rotate>.
 
 =cut
