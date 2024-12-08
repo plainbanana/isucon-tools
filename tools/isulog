@@ -66,7 +66,7 @@ if ($opt->{rotate}) {
     my $memo = $opt->{'--memo'};
     my $cmds = {
         kataribe =>
-            "cat %K_LOG% | kataribe -f %K_CONFIG% | sed -e '1i[ISULOG] kataribe at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
+            "sudo cat %K_LOG% | kataribe -f %K_CONFIG% | sed -e '1i[ISULOG] kataribe at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         slow =>
             "sudo pt-query-digest --limit 10 %SLOW_LOG% | cut -b 1-320 | sed -e '1i[ISULOG] pt-query-digest at ${host}\\nmemo: ${memo}\\n\\n```' -e '\$a```' | discocat --tee --bot %BOT%",
         pprof =>
